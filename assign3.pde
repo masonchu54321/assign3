@@ -42,8 +42,8 @@ void setup () {
   x_hpRect = 46;
   x_treasure = floor(random(150,580));
   y_treasure = floor(random(35,435));
-  //x_enemy =0;
-  //y_enemy = 300;//floor(random(35,417));
+  x_enemy =0;
+  y_enemy = floor(random(35,417));
   rectMode(CORNERS);
   x_bg1 = 0;
   
@@ -66,14 +66,14 @@ void draw() {
   image(treasureImage, x_treasure, y_treasure);
   
   //enemies
+
   for (int i=0; i < count_1; i++){
-    x_enemy += 2;
     x_enemy = i*spacingX_1;
-    y_enemy = 250;
+    x_enemy += 2;
     image(enemyImage,x_enemy,y_enemy);
   }
-  
-    image(enemyImage,x_enemy,y_enemy);
+
+   
   if(x_enemy >= width) {
     x_enemy = 0;
     y_enemy = floor(random(35,417));

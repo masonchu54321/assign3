@@ -155,21 +155,6 @@ void draw() {
         state = STATE_END;
       }
       break;
-    case STATE_END:
-      image(end2Image,0,0);
-      if(mouseX >= 205 && mouseX <= 438) {
-        if(mouseY >= 306 && mouseY <= 349) {
-          if(mousePressed) {
-            state = STATE_START;
-            x_hpRect = 46;
-            x_fighter = 590;
-            y_fighter = 243;
-          } else {
-            image(end1Image,0,0);
-          }
-        }
-      }
-      break;
   }
 }
 void keyPressed(){

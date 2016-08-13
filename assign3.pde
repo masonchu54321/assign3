@@ -2,10 +2,10 @@
 PImage hpImage, fighterImage, enemyImage, treasureImage;
 
 //background pic
-PImage bg1Image, bg2Image;
+PImage start1Image, start2Image, bg1Image, bg2Image, end1Image, end2Image;
 
 //position var
-float x_fighter, y_fighter, x_hpRect,x_treasure, y_treasure, x_enemy, y_enemy, x_bg1, x_bg2;
+int x_fighter, y_fighter, x_hpRect,x_treasure, y_treasure, x_enemy, y_enemy, x_bg1, x_bg2;
 
 //pressed
 boolean upPressed = false;
@@ -13,12 +13,21 @@ boolean downPressed = false;
 boolean leftPressed = false;
 boolean rightPressed = false;
 
+//state
+final int STATE_START = 0, STATE_PLAYING = 1, STATE_END = 2;
+int state = STATE_START;
+
+//arraies
+final int ARRAY_1 = 0, ARRAY_2 = 1, ARRAY_3 = 2;
+int array = ARRAY_1;
+
 //
-int speed_fighter = 4;
+int speed_fighter = 2;
 final int full_hp = 206;
-final int count_1 = 5;
-float x;
-float spacingX_1 = 70; 
+final int count_1 = 5, count_2 = 5;
+float x, y;
+float spacingX = 70, spacingY =70;
+
 
 //pic properties
 final int height_trease = 41, width_trease = 41;
@@ -35,7 +44,11 @@ void setup () {
   treasureImage = loadImage("img/treasure.png");
   bg1Image = loadImage("img/bg1.png");
   bg2Image = loadImage("img/bg2.png");
-
+  start1Image = loadImage("img/start1.png");
+  start2Image = loadImage("img/start2.png");
+  end1Image = loadImage("img/end1.png");
+  end2Image = loadImage("img/end2.png");
+  
   //position var
   x_fighter = 590;
   y_fighter = 243;
@@ -50,52 +63,126 @@ void setup () {
 }
 
 void draw() {
-
-  //background
-  image(bg1Image,x_bg1 % (width*2) -width,0);
-  image(bg2Image,(x_bg1+width) % (width*2) -width,0);
-  x_bg1 += 1;
-          
-  //hp
-  rect(5,3,full_hp,25);
-  fill(255,0,0);
-  image(hpImage,0,0);
-          
-  //fighter
-  image(fighterImage, x_fighter, y_fighter);
-  image(treasureImage, x_treasure, y_treasure);
-  
-  //enemies
-
-  for (int i=0; i < count_1; i++){
-    x_enemy = i*spacingX_1;
-    x_enemy += 2;
-    image(enemyImage,x_enemy,y_enemy);
-  }
-
-   
-  if(x_enemy >= width) {
-    x_enemy = 0;
-    y_enemy = floor(random(35,417));
-  }
-  //fighter control
-  if(upPressed) {y_fighter -= speed_fighter;}
-  if(downPressed) {y_fighter += speed_fighter;}
-  if(rightPressed) {x_fighter += speed_fighter;}
-  if(leftPressed) {x_fighter -= speed_fighter;}
-          
-  // fighter boundary
-  if(y_fighter <= 2) {
-    y_fighter = 2;
-  }
-  if(y_fighter >= height-52) {
-    y_fighter = height-52;
-  }
-  if(x_fighter <= 2) {
-    x_fighter = 2;
-  }
-  if(x_fighter >= width-52) {
-    x_fighter = width-52;
+  switch(state){
+    case STATE_START:
+      image(start2Image,0,0);
+      if(mouseX >= 205 && mouseX <= 455) {
+        if(mouseY >= 374 && mouseY <= 415) {
+          if(mousePressed) {
+            state = STATE_PLAYING;
+          } else {
+            image(start1Image,0,0);
+          }
+        }
+      }
+      break;    
+    case STATE_PLAYING:
+      //background
+      image(bg1Image,x_bg1 % (width*2) -width,0);
+      image(bg2Image,(x_bg1+width) % (width*2) -width,0);
+      x_bg1 += 1;
+      
+      //hp
+      rect(5,3,full_hp,25);
+      fill(255,0,0);
+      image(hpImage,0,0);
+      
+      //fighter
+      image(fighterImage, x_fighter, y_fighter);
+      image(treasureImage, x_treasure, y_treasure);
+      x_enemy +=3;
+      
+      //enemies
+      switch(array % 2){
+        case ARRAY_1:
+          for (int i = 0; i < count_1; i++){
+            x = i * spacingX;
+            image(enemyImage, x_enemy + x, y_enemy);
+          }
+          break;
+        case ARRAY_2:
+          for (int i = 0; i <count_2; i++){
+            x = i * spacingX;
+            y = i * spacingY;
+            image(enemyImage,x_enemy + x, y_enemy +y);
+          }
+          break;
+      }
+      x_enemy += 4;
+      if(x_enemy >= width) {
+        x_enemy = 0;
+        y_enemy = floor(random(35,417));
+        array++;
+      }
+      
+      //if(y_enemy + height_enemy/2 < y_fighter + height_fighter/2) {
+        //y_enemy += 1;
+      //}
+      //if(y_enemy + height_enemy/2 > y_fighter + height_fighter/2) {
+        //y_enemy -= 1;
+      //}
+      
+      //fighter control
+      if(upPressed) {y_fighter -= speed_fighter;}
+      if(downPressed) {y_fighter += speed_fighter;}
+      if(rightPressed) {x_fighter += speed_fighter;}
+      if(leftPressed) {x_fighter -= speed_fighter;}
+      
+      // fighter boundary
+      if(y_fighter <= 2) {
+        y_fighter = 2;
+      }
+      if (y_fighter >= height-52) {
+        y_fighter = height-52;
+      }
+      if(x_fighter <= 2) {
+        x_fighter = 2;
+      }
+      if(x_fighter >= width-52) {
+        x_fighter = width-52;
+      }
+      
+      //get tresure
+      //if(x_fighter <= x_treasure + width_trease && x_fighter +width_fighter >= x_treasure) {
+        //if(y_fighter + height_fighter >= y_treasure && y_fighter <= y_treasure + height_fighter) {
+          //x_treasure = floor(random(150,580));
+          //y_treasure = floor(random(35,435));
+          //if(x_hpRect < full_hp) {
+            //x_hpRect += 20;
+          //}
+        //}
+      //}
+      
+      //crush 
+      //if(x_fighter <= x_enemy + width_enemy && x_fighter +width_fighter >= x_enemy) {
+        //if(y_fighter + height_fighter/2 >= y_enemy && y_fighter + height_fighter/2 <= y_enemy + height_enemy) {
+          //x_enemy =0;
+          //y_enemy = floor(random(35,417));
+          //if(x_hpRect > 6) {
+            //x_hpRect -= 40;
+          //}
+        //}
+      //}
+      
+      if(x_hpRect <= 6) {
+        state = STATE_END;
+      }
+      break;
+    case STATE_END:
+      image(end2Image,0,0);
+      if(mouseX >= 205 && mouseX <= 438) {
+        if(mouseY >= 306 && mouseY <= 349) {
+          if(mousePressed) {
+            state = STATE_START;
+            x_hpRect = 46;
+            x_fighter = 590;
+            y_fighter = 243;
+          } else {
+            image(end1Image,0,0);
+          }
+        }
+      }
+      break;
   }
 }
 void keyPressed(){

@@ -26,7 +26,7 @@ int speed_fighter = 2;
 final int full_hp = 206;
 final int count_1 = 5, count_2 = 5;
 float x, y;
-float spacingX = 70, spacingY =70;
+float spacingX = 70, spacingY =61;
 
 
 //pic properties
@@ -99,14 +99,18 @@ void draw() {
             x = i * spacingX;
             image(enemyImage, x_enemy + x, y_enemy);
           }
-          break;
+        break;
         case ARRAY_2:
+          if( y_enemy + 5 * spacingY >= height) {
+            y_enemy = floor(random(35,height - 5 * spacingY));
+          }
           for (int i = 0; i <count_2; i++){
             x = i * spacingX;
             y = i * spacingY;
-            image(enemyImage,x_enemy + x, y_enemy +y);
+            image(enemyImage,x_enemy + x, y_enemy + y);
           }
-          break;
+        break;
+        case ARRAY_3:
       }
       x_enemy += 4;
       if(x_enemy >= width) {

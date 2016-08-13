@@ -132,14 +132,6 @@ void draw() {
         y_enemy = floor(random(35,417));
         array++;
       }
-      
-      //if(y_enemy + height_enemy/2 < y_fighter + height_fighter/2) {
-        //y_enemy += 1;
-      //}
-      //if(y_enemy + height_enemy/2 > y_fighter + height_fighter/2) {
-        //y_enemy -= 1;
-      //}
-      
       //fighter control
       if(upPressed) {y_fighter -= speed_fighter;}
       if(downPressed) {y_fighter += speed_fighter;}
@@ -159,29 +151,6 @@ void draw() {
       if(x_fighter >= width-52) {
         x_fighter = width-52;
       }
-      
-      //get tresure
-      //if(x_fighter <= x_treasure + width_trease && x_fighter +width_fighter >= x_treasure) {
-        //if(y_fighter + height_fighter >= y_treasure && y_fighter <= y_treasure + height_fighter) {
-          //x_treasure = floor(random(150,580));
-          //y_treasure = floor(random(35,435));
-          //if(x_hpRect < full_hp) {
-            //x_hpRect += 20;
-          //}
-        //}
-      //}
-      
-      //crush 
-      //if(x_fighter <= x_enemy + width_enemy && x_fighter +width_fighter >= x_enemy) {
-        //if(y_fighter + height_fighter/2 >= y_enemy && y_fighter + height_fighter/2 <= y_enemy + height_enemy) {
-          //x_enemy =0;
-          //y_enemy = floor(random(35,417));
-          //if(x_hpRect > 6) {
-            //x_hpRect -= 40;
-          //}
-        //}
-      //}
-      
       if(x_hpRect <= 6) {
         state = STATE_END;
       }

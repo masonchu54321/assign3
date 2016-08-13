@@ -24,9 +24,9 @@ int array = ARRAY_1;
 //
 int speed_fighter = 2;
 final int full_hp = 206;
-final int count_1 = 5, count_2 = 5;
+final int count_1 = 5, count_2 = 5, count_3 = 5;
 float x, y;
-float spacingX = 70, spacingY =61;
+int spacingX = 50, spacingY =50;
 
 
 //pic properties
@@ -55,7 +55,7 @@ void setup () {
   x_hpRect = 46;
   x_treasure = floor(random(150,580));
   y_treasure = floor(random(35,435));
-  x_enemy =0;
+  x_enemy = -5 * spacingX;
   y_enemy = floor(random(35,417));
   rectMode(CORNERS);
   x_bg1 = 0;
@@ -93,7 +93,7 @@ void draw() {
       x_enemy +=3;
       
       //enemies
-      switch(array % 2){
+      switch(array % 3){
         case ARRAY_1:
           for (int i = 0; i < count_1; i++){
             x = i * spacingX;
@@ -111,10 +111,24 @@ void draw() {
           }
         break;
         case ARRAY_3:
+          if( y_enemy + 3 * spacingY >= height || y_enemy - 2 * spacingY <= 35) {
+            y_enemy = floor(random(35 + 2 * spacingY,height - 3 * spacingY));
+          }
+          for (int i = 0; i <count_2; i++){
+            x = i * spacingX;
+            if(i > 2){
+              y = -(i-4) * spacingY;
+            } else{
+            y = i * spacingY;
+            }
+            image(enemyImage,x_enemy + x, y_enemy + y);
+            image(enemyImage,x_enemy + x, y_enemy - y);
+          }
+        
       }
-      x_enemy += 4;
+      x_enemy += 2;
       if(x_enemy >= width) {
-        x_enemy = 0;
+        x_enemy = -5 * spacingX;
         y_enemy = floor(random(35,417));
         array++;
       }

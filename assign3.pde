@@ -82,15 +82,15 @@ void draw() {
       image(bg2Image,(x_bg1+width) % (width*2) -width,0);
       x_bg1 += 1;
       
-      //hp
-      rect(5,3,full_hp,25);
-      fill(255,0,0);
-      image(hpImage,0,0);
-      
       //fighter
       image(fighterImage, x_fighter, y_fighter);
       image(treasureImage, x_treasure, y_treasure);
       x_enemy +=3;
+      
+      //hp
+      rect(5,3,full_hp,25);
+      fill(255,0,0);
+      image(hpImage,0,0);
       
       //enemies
       switch(array % 3){
@@ -132,6 +132,14 @@ void draw() {
         y_enemy = floor(random(35,417));
         array++;
       }
+      
+      //if(y_enemy + height_enemy/2 < y_fighter + height_fighter/2) {
+        //y_enemy += 1;
+      //}
+      //if(y_enemy + height_enemy/2 > y_fighter + height_fighter/2) {
+        //y_enemy -= 1;
+      //}
+      
       //fighter control
       if(upPressed) {y_fighter -= speed_fighter;}
       if(downPressed) {y_fighter += speed_fighter;}
@@ -151,8 +159,46 @@ void draw() {
       if(x_fighter >= width-52) {
         x_fighter = width-52;
       }
+      
+      //get tresure
+      //if(x_fighter <= x_treasure + width_trease && x_fighter +width_fighter >= x_treasure) {
+        //if(y_fighter + height_fighter >= y_treasure && y_fighter <= y_treasure + height_fighter) {
+          //x_treasure = floor(random(150,580));
+          //y_treasure = floor(random(35,435));
+          //if(x_hpRect < full_hp) {
+            //x_hpRect += 20;
+          //}
+        //}
+      //}
+      
+      //crush 
+      //if(x_fighter <= x_enemy + width_enemy && x_fighter +width_fighter >= x_enemy) {
+        //if(y_fighter + height_fighter/2 >= y_enemy && y_fighter + height_fighter/2 <= y_enemy + height_enemy) {
+          //x_enemy =0;
+          //y_enemy = floor(random(35,417));
+          //if(x_hpRect > 6) {
+            //x_hpRect -= 40;
+          //}
+        //}
+      //}
+      
       if(x_hpRect <= 6) {
         state = STATE_END;
+      }
+      break;
+    case STATE_END:
+      image(end2Image,0,0);
+      if(mouseX >= 205 && mouseX <= 438) {
+        if(mouseY >= 306 && mouseY <= 349) {
+          if(mousePressed) {
+            state = STATE_START;
+            x_hpRect = 46;
+            x_fighter = 590;
+            y_fighter = 243;
+          } else {
+            image(end1Image,0,0);
+          }
+        }
       }
       break;
   }
